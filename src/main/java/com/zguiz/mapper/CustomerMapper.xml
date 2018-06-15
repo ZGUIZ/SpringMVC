@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zguiz.mapper.CustomerMapper">
+    <select id="findCustomer" resultMap="CustomerResMap" resultType="Customer" parameterType="Customer">
+        select * from customer
+        <where>
+            <if test="userId!=0">
+                user_id=#{userId}
+            </if>
+            <if test="account!= null">
+                and account=#{account}
+            </if>
+            <if test="password != null">
+                and password=#{password}
+            </if>
+            <if test="balance!=0">
+                and balance=#{balance}
+            </if>
+        </where>
+    </select>
+    <resultMap id="CustomerResMap" type="Customer">
+        <id column="user_id" property="userId"/>
+        <result column="account" property="account"/>
+        <result column="password" property="password"/>
+        <result column="balance" property="balance"/>
+    </resultMap>
+    <insert id="register" parameterType="Customer">
+        insert into customer(account,password,balance) values(#{account},#{password},#{balance});
+    </insert>
+</mapper>

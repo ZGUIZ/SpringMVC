@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zguiz.mapper.BookMapper">
+    <select id="findBookByCategoryName" resultMap="BookResMapper" parameterType="com.zguiz.bean.Category" resultType="com.zguiz.bean.Book">
+        select * from book where category_id = (
+          select id from category where name= #{name}
+        );
+    </select>
+    <resultMap id="BookResMapper" type="com.zguiz.bean.Book">
+        <result property="bookName" column="book_name"/>
+        <result property="publishDate" column="publish_date"/>
+        <result property="categoryId" column="category_id"/>
+    </resultMap>
+
+    <insert id="addBook" parameterType="Book">
+        INSERT INTO book(isbn,book_name,price,publish_date,publisher,category_id) VALUE (#{isbn},#{bookName},#{price},#{publishDate},#{publisher},#{categoryId})
+    </insert>
+    <resultMap id="BookResultMap" type="Book">
+        <result column="book_name" property="bookName"/>
+        <result column="price" property="price"/>
+        <result column="publish_date" property="publishDate"/>
+        <result column="publisher" property="publisher"/>
+        <association property="category" column="category_id" select="selectCategoryForBook" />
+    </resultMap>
+    <select id="findAll" resultMap="BookResultMap" resultType="Book">
+        select * from book;
+    </select>
+    <select id="findBook" resultMap="BookResultMap" resultType="Book">
+        select * from book
+        <where>
+            <if test="isbn!=null">
+                isbn = #{isbn}
+            </if>
+            <if test="bookName!=null">
+                and book_name like "%"#{bookName}"%"
+            </if>
+            <if test="price > 0">
+                and price = #{price}
+            </if>
+            <if test="publishDate!=null">
+                and publish_date=#{publishDate}
+            </if>
+            <if test="publisher!=null">
+                and publisher=#{publisher}
+            </if>
+        </where>
+    </select>
+    <resultMap id="BookResultMap2" type="Book">
+        <result column="book_name" property="bookName"/>
+        <result column="price" property="price"/>
+        <result column="publish_date" property="publishDate"/>
+        <result column="publisher" property="publisher"/>
+        <result column="id" property="category.id"/>
+        <result column="name" property="category.name"/>
+    </resultMap>
+    <select id="findAllBookAndCategory" resultMap="BookResultMap2" resultType="Book">
+        select * from book left join category on (book.category_id=category.id);
+    </select>
+    <select id="selectCategoryForBook" parameterType="int" resultType="Category">
+        select * from category where id=#{category_id};
+    </select>
+
+    <sql id="updateSql">
+        update book
+        <set>
+            <if test="bookName!=null">
+                book_name=#{bookName},
+            </if>
+            <if test="price>0">
+                price=#{price},
+            </if>
+            <if test="publishDate!=null">
+                publish_date=#{publishDate},
+            </if>
+            <if test="publisher!=null">
+                publisher=#{publisher},
+            </if>
+            <if test="categoryId>0">
+                category_id=#{categoryId}
+            </if>
+        </set>
+        where isbn=#{isbn}
+    </sql>
+
+    <update id="updateBook" parameterType="Book">
+        <include refid="updateSql"/>
+    </update>
+
+    <!--  分页查询条件  -->
+    <sql id="pagerParam">
+        <where>
+            <if test="param!=null and param.bookName!=null">
+                book_name like "%"#{param.bookName}"%"
+            </if>
+            <if test="param!=null and param.isbn!=null">
+                and isbn like "%"#{param.isbn}"%"
+            </if>
+            <if test="param!=null and param.price > 0">
+                and price &lt;= #{param.price}
+            </if>
+            <if test="param!=null and param.publishDate!=null">
+                and publish_date=#{param.publishDate}
+            </if>
+            <if test="param!=null and param.publisher!=null">
+                and publisher=#{param.publisher}
+            </if>
+        </where>
+    </sql>
+    <!--分页查询-->
+    <select id="findByPager" parameterType="Pager" resultMap="BookResultMap">
+        select * from book
+        <include refid="pagerParam"/>
+        limit #{startIndex},#{pageSize}
+    </select>
+    <!--总数量统计-->
+    <select id="countForPager" parameterType="Pager" resultType="int">
+        select count(isbn) from book
+        <include refid="pagerParam"/>
+    </select>
+
+    <!--批量查找-->
+    <select id="findByIsbnList" resultType="Book" parameterType="String" resultMap="BookResultMap2">
+        select * from book where isbn in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <!--批量删除-->
+    <delete id="deleteByIsbnList" parameterType="String">
+        delete from book where isbn in
+        <foreach item="item" collection="list" index="index" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </delete>
+    <!--批量修改-->
+    <update id="editBooks" parameterType="Book">
+        update book
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="book_name= case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.bookName != null">
+                        when isbn=#{item.isbn} then #{item.bookName}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="price= case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.price > 0">
+                        when isbn=#{item.isbn} then #{item.price}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="publish_date= case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.publishDate != null">
+                        when isbn=#{item.isbn} then #{item.publishDate}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="publisher= case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.publisher > 0">
+                        when isbn=#{item.isbn} then #{item.publisher}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where isbn in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item.isbn}
+        </foreach>
+    </update>
+    <insert id="addBooks" parameterType="Book">
+        insert into book(isbn,book_name,price,publish_date,publisher,category_id) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.isbn},#{item.bookName},#{item.price},#{item.publishDate},#{item.publisher},#{item.categoryId})
+        </foreach>
+    </insert>
+</mapper>

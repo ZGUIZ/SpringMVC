@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+<!-- 
+    配置全局文件时，需要按照以下先后顺序进行配置
+    (properties?,settings?,typeAliases?,typeHandlers?,
+      objectFactory?,objectWrapperFactory?,reflectorFactory?,
+      plugins?,environments?,databaseIdProvider?,mappers?) 
+      
+ -->
+    <!--
+       1. 对于系统的某些配置信息，可使用Properties便签进行统一  
+       2.为了方便统一管理配置信息，还可以使用属性配置文件进行配置属性，可以使用resource读取配置文件
+    -->
+    <!-- 
+    <properties resource="db_config.properties">
+        <property name="driver" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/mssdb"/>
+        <property name="username" value="javauser"/>
+        <property name="password" value="123456"/>
+    </properties>  
+     -->
+ 
+   <!-- 使用别名优化mybatis配置 -->
+  <typeAliases>
+    <!-- 命名统一规范时，还可以使用package包名简化别名配置 -->
+    <package name="com.zguiz.bean"/>
+    <!-- <typeAlias type="com.neuedu.bookstore.bean.Book" alias="Book"/>
+    <typeAlias type="com.neuedu.bookstore.bean.Category" alias="Category"/> -->
+  </typeAliases>
+  
+  
+   <!-- mybatis运行环境 -->
+   
+<!--  <environments default="development"> 
+    <environment id="development">
+      使用jdbc进行事务管理
+      <transactionManager type="JDBC"/>
+       配置数据源(连接池)
+      <dataSource type="POOLED">
+        <property name="driver" value="${driver}"/>
+        <property name="url" value="${url}"/>
+        <property name="username" value="${username}"/>
+        <property name="password" value="${password}"/>
+      </dataSource>
+    </environment>
+  </environments> 
+   -->
+  <!-- 用于配置接口映射文件  -->
+  <mappers>
+        <!-- 使用package简化mapper映射配置 -->
+      <!--  <package name="com.neuedu.bookstore.mapper"/> -->
+       <!--  <mapper resource="com/neuedu/bookstore/mapper/CategoryMapper.xml"/> -->
+      <!--  <mapper resource="com/neuedu/bookstore/mapper/BookMapper.xml"/> -->
+      <!-- 当Mapper映射接口与配置文件名称一致时，可以使用接口类型进行映射 -->
+     <!--  <mapper class="com.neuedu.bookstore.mapper.BookMapper"/> -->
+      <!-- 可以是file文件访问协议，读取文件系统的指定文件;
+                              在服务器环境中，多套程序可以使用系统文件进行统一配置
+       -->
+      <!-- <mapper url="file:///E:/lsworkspace/Bookstore/src/com/neuedu/bookstore/mapper/BookMapper.xml"/> -->
+  </mappers>
+  
+</configuration>
