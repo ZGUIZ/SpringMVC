@@ -31,44 +31,36 @@
         <table align="center" class="table table-striped table-hover table-bordered">
             <thead>
             <tr>
-                <td colspan="7" style="font-style: 32px;text-align: center;">书籍列表页面</td>
+                <td colspan="3" style="font-style: 32px;text-align: center;">分类列表页面</td>
             </tr>
             </thead>
             <tr>
-                <td colspan="7" style="font-style: 20px;text-align: center;">
-                    <a href="book/add.action">新增书籍</a>
+                <td colspan="3" style="font-style: 20px;text-align: center;">
+                    <a href="<%=basePath%>pages/addcategory.jsp">新增分类</a>
                 </td>
             </tr>
             <thead>
                 <tr>
-                    <td>isbn</td>
-                    <td>书名</td>
-                    <td>价格</td>
-                    <td>出版社</td>
-                    <td>出版日期</td>
-                    <td>分类</td>
+                    <td>id</td>
+                    <td>分类名称</td>
                     <td>操作</td>
                 </tr>
             </thead>
-            <c:forEach items="${books}" var="book">
+            <c:forEach items="${categories}" var="category">
                 <tr>
-                    <td>${book.isbn}</td>
-                    <td>${book.bookName}</td>
-                    <td>${book.price}</td>
-                    <td>${book.publisher}</td>
-                    <td>${book.publishDate}</td>
-                    <td>${book.category.name}</td>
-                    <td><a href="book/update.action?isbn=${book.isbn}">修改</a>
-                        <a href="javascript:deleteBook('${book.isbn}','${book.bookName}');" >删除</a></td>
+                    <td>${category.id}</td>
+                    <td>${category.name}</td>
+                    <td><a href="category/update.action?id=${category.id}">修改</a>
+                        <a href="javascript:deleteCategory('${category.id}','${category.name}');" >删除</a></td>
                 </tr>
             </c:forEach>
         </table>
     </div>
 </body>
 <script type="text/javascript">
-    function deleteBook(isbn,name){
+    function deleteCategory(id,name){
         if(confirm("确认删除《"+name+"》？")){
-            location.href="book/del.action?isbn="+isbn;
+            location.href="category/del.action?id="+id;
         }
     }
 </script>

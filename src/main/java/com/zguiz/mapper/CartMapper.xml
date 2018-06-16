@@ -16,7 +16,7 @@
                 and user_id=#{userId}
             </if>
             <if test="createDate != null">
-                and create_date=#{createDate}
+                and create_date >= #{createDate}
             </if>
         </where>
     </select>

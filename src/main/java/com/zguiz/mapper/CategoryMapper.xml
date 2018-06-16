@@ -15,8 +15,8 @@
     <resultMap id="CategoryResMap" type="Category">
         <id column="id" property="id"/>
         <result column="name" property="name"/>
-        <collection property="books" ofType="Book" select="selectBookByCategory" column="id">
-        </collection>
+        <!--<collection property="books" ofType="Book" select="selectBookByCategory" column="id">-->
+        <!--</collection>-->
     </resultMap>
     <resultMap id="BookMap" type="Book">
         <result column="book_name" property="bookName"/>
@@ -45,4 +45,39 @@
             </if>
         </where>
     </select>
+
+    <delete id="deleteCategory" parameterType="Category">
+        delete from category where id in
+        <foreach collection="list" item="item" open="(" separator="," close=")" index="index">
+            #{item}
+        </foreach>
+    </delete>
+
+    <update id="updateCategory" parameterType="Category">
+        update category
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="name = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.name != null">
+                        when id=#{item.id} then #{item.name}
+                    </if>
+                    <if test="item.name == null">
+                        when id=#{item.id} then name
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        <where>
+            id in
+            <foreach collection="list" index="index" item="item" separator="," open="(" close=")">
+                #{item.id}
+            </foreach>
+        </where>
+    </update>
+    <insert id="addCategoryByList" parameterType="Category">
+        insert into category(name) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.name})
+        </foreach>
+    </insert>
 </mapper>

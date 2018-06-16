@@ -22,4 +22,41 @@ public class BookService implements IBookService {
         return books;
     }
 
+    @Override
+    public boolean addBook(Book book) {
+        try {
+            if (bookMapper.addBook(book) > 0) {
+                return true;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean deleteBook(Book book) {
+        return deleteBook(book.getIsbn());
+    }
+
+    @Override
+    public boolean deleteBook(String isbn) {
+        try {
+            return bookMapper.deleteByIsbn(isbn);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean updateBook(Book book){
+        int res=bookMapper.updateBook(book);
+        if(res>0){
+            return true;
+        }
+        return false;
+    }
+
 }

@@ -178,4 +178,8 @@
             (#{item.isbn},#{item.bookName},#{item.price},#{item.publishDate},#{item.publisher},#{item.categoryId})
         </foreach>
     </insert>
+
+    <delete id="deleteByIsbn" parameterType="java.lang.String">
+         delete from book where isbn = #{isbn};
+    </delete>
 </mapper>

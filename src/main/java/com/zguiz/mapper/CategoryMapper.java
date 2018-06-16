@@ -12,4 +12,8 @@ public interface CategoryMapper {
     List<Category> findAll();
     List<Category> findByName(Category category);
     List<Category> findByNameOrId(Category category);
+
+    int deleteCategory(List<Integer> id);
+    int updateCategory(List<Category> categories);
+    int addCategoryByList(List<Category> categories);
 }

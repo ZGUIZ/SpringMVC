@@ -53,4 +53,11 @@ public interface BookMapper {
      * @param books
      */
     void addBooks(List<Book> books);
+
+    /**
+     * 删除指定书籍
+     * @param isbn
+     * @return
+     */
+    boolean deleteByIsbn(String isbn);
 }
