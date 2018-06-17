@@ -2,6 +2,7 @@ package com.zguiz.view;
 
 import com.zguiz.bean.Book;
 import com.zguiz.bean.Category;
+import com.zguiz.bean.Pager;
 import com.zguiz.service.IBookService;
 import com.zguiz.service.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +50,7 @@ public class BookController {
     @RequestMapping("/doadd")
     public String doAddBook(Book book){
         if(bookService.addBook(book)){
-            return "forward:/book/list.action";
+            return "forward:/book/listbypager.action";
         }
         else{
             return "forward:/book/add.action";
@@ -59,7 +60,7 @@ public class BookController {
     @RequestMapping("/del")
     public String delBook(String isbn){
         bookService.deleteBook(isbn);
-        return "forward:/book/list.action";
+        return "forward:/book/listbypager.action";
     }
 
     @RequestMapping("/update")
@@ -74,11 +75,26 @@ public class BookController {
         return view;
     }
 
-    @RequestMapping("doupdate")
+    @RequestMapping("/doupdate")
     public String doUpdate(Book book){
         if(bookService.updateBook(book)){
-            return "forward:/book/list.action";
+            return "forward:/book/listbypager.action";
         }
         return "forward:/book/update.action?isbn="+book.getIsbn();
+    }
+
+    @RequestMapping("/listbypager")
+    public ModelAndView listBookByPage(Pager pager){
+        if (pager.getBook() != null) {
+            System.out.println(pager.getBook().toString());
+        }
+        ModelAndView view=new ModelAndView("booklistbypager");
+        pager.setTotal(bookService.countForPager(pager));
+        List<Book> books=bookService.findBookByPager(pager);
+        List<Category> categories=categoryService.findAllCategory();
+        view.getModel().put("books",books);
+        view.getModel().put("categories",categories);
+        view.getModel().put("pager",pager);
+        return view;
     }
 }

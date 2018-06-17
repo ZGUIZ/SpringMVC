@@ -28,6 +28,11 @@
             <a role="menuitem" tabindex="-1" href="#">分离的连接</a>
         </li>
     </ul>
+    <form action="/hello" method="post">
+        <input type="text" name="category.id" value="50"/>
+        <input type="text" placeholder="测试" name="category.name" class="title"/>
+        <input type="submit"/>
+    </form>
 </div>
 </body>
 <!-- jQuery (Bootstrap 的 JavaScript 插件需要引入 jQuery) -->

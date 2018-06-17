@@ -1,6 +1,7 @@
 package com.zguiz.service.impl;
 
 import com.zguiz.bean.Book;
+import com.zguiz.bean.Pager;
 import com.zguiz.mapper.BookMapper;
 import com.zguiz.service.IBookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,16 @@ public class BookService implements IBookService {
     public List<Book> findBook(Book book){
         List<Book> books=bookMapper.findBook(book);
         return books;
+    }
+
+    /**
+     * 分页多条件查询
+     * @param pager
+     * @return
+     */
+    @Override
+    public List<Book> findBookByPager(Pager pager) {
+        return bookMapper.findByPager(pager);
     }
 
     @Override
@@ -57,6 +68,11 @@ public class BookService implements IBookService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public int countForPager(Pager pager) {
+        return bookMapper.countForPager(pager);
     }
 
 }

@@ -91,20 +91,23 @@
     <!--  分页查询条件  -->
     <sql id="pagerParam">
         <where>
-            <if test="param!=null and param.bookName!=null">
-                book_name like "%"#{param.bookName}"%"
+            <if test="book!=null and book.bookName!=null">
+                book_name like "%"#{book.bookName}"%"
             </if>
-            <if test="param!=null and param.isbn!=null">
-                and isbn like "%"#{param.isbn}"%"
+            <if test="book!=null and book.isbn!=null">
+                and isbn like "%"#{book.isbn}"%"
             </if>
-            <if test="param!=null and param.price > 0">
-                and price &lt;= #{param.price}
+            <if test="book!=null and book.price > 0">
+                and price &lt;= #{book.price}
             </if>
-            <if test="param!=null and param.publishDate!=null">
-                and publish_date=#{param.publishDate}
+            <if test="book!=null and book.publishDate!=null">
+                and publish_date=#{book.publishDate}
             </if>
-            <if test="param!=null and param.publisher!=null">
-                and publisher=#{param.publisher}
+            <if test="book!=null and book.publisher!=null">
+                and publisher like "%"#{book.publisher}"%"
+            </if>
+            <if test="book!=null and book.categoryId > 0">
+                and category_id=#{book.categoryId}
             </if>
         </where>
     </sql>

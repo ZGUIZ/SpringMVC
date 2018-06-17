@@ -1,14 +1,14 @@
 package com.zguiz.bean;
 
-import java.util.List;
-
-public class Pager<T> {
+public class Pager {
     private int currentPage=1;
     private int pageSize=10;
     private int total;
 
-    private T param;
-    private List<T> results;
+//    private T param;
+//    private List<T> results;
+
+    private Book book;
 
     public Pager() {
     }
@@ -56,20 +56,28 @@ public class Pager<T> {
         return (currentPage-1)*pageSize;
     }
 
-    public T getParam() {
-        return param;
+//    public T getParam() {
+//        return param;
+//    }
+//
+//    public void setParam(T param) {
+//        this.param = param;
+//    }
+//
+//    public List<T> getResults() {
+//        return results;
+//    }
+//
+//    public void setResults(List<T> results) {
+//        this.results = results;
+//    }
+
+    public Book getBook() {
+        return book;
     }
 
-    public void setParam(T param) {
-        this.param = param;
-    }
-
-    public List<T> getResults() {
-        return results;
-    }
-
-    public void setResults(List<T> results) {
-        this.results = results;
+    public void setBook(Book book) {
+        this.book = book;
     }
 
     /**

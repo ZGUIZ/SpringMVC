@@ -29,7 +29,11 @@ public class Book {
     }
 
     public void setIsbn(String isbn) {
-        this.isbn = isbn;
+        if(isbn==null||isbn.trim().equals("")){
+            this.isbn=null;
+        }else {
+            this.isbn = isbn;
+        }
     }
 
     public String getBookName() {
@@ -37,7 +41,11 @@ public class Book {
     }
 
     public void setBookName(String bookName) {
-        this.bookName = bookName;
+        if(bookName==null||bookName.trim().equals("")){
+            this.bookName=null;
+        }else {
+            this.bookName = bookName;
+        }
     }
 
     public double getPrice() {
@@ -61,7 +69,11 @@ public class Book {
     }
 
     public void setPublisher(String publisher) {
-        this.publisher = publisher;
+        if(bookName==null||bookName.trim().equals("")){
+            this.bookName=null;
+        } else {
+            this.publisher = publisher;
+        }
     }
 
     public int getCategoryId() {
