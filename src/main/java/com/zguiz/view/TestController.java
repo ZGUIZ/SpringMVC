@@ -9,8 +9,12 @@ import org.springframework.web.servlet.ModelAndView;
 public class TestController {
     @RequestMapping("hello")
     public String hello(Book book){
-        System.out.println(book.getCategory().getId());
-        return "index";
+        boolean flag=true;
+        if(flag){
+            throw new NullPointerException();
+        }
+        //System.out.println(book.getCategory().getId());
+        return "forward:/book/list";
     }
 
     @RequestMapping("index")

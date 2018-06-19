@@ -1,9 +1,13 @@
 package com.zguiz.bean;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import java.util.Date;
 
 public class Book {
+    @NotBlank(message = "{isbn_blank}")
     private String isbn;
+    @NotBlank(message = "{bookName_blank}")
     private String bookName;
     private double price;
     private Date publishDate;

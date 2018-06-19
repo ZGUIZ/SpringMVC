@@ -5,9 +5,13 @@ import com.zguiz.bean.Category;
 import com.zguiz.bean.Pager;
 import com.zguiz.service.IBookService;
 import com.zguiz.service.ICategoryService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -22,6 +26,7 @@ public class BookController {
     @Autowired
     private ICategoryService categoryService;
 
+    private Logger logger=Logger.getRootLogger();
     /**
      * 查找所有书籍
      * @param model
@@ -47,10 +52,21 @@ public class BookController {
         return view;
     }
 
+    //BindingResult必须加载@Validated后面
     @RequestMapping("/doadd")
-    public String doAddBook(Book book){
+    public String doAddBook(Model model,@Validated Book book, BindingResult result){
+        //客户端提交到spring mvc后，会先进行数据封装和转换、校验，完成后再控制器内进行处理
+        //可以使用校验框架进行数据的集中校验，并获得校验结果
+        if(result.hasErrors()){
+            List<ObjectError> objectErrors=result.getAllErrors();
+            model.addAttribute("errors",objectErrors);
+            for(ObjectError oe:objectErrors){
+                logger.debug(oe.getObjectName()+":"+oe.getDefaultMessage());
+            }
+            return "forward:/book/add";
+        }
         if(bookService.addBook(book)){
-            return "forward:/book/listbypager.action";
+            return "redirect:/book/listbypager.action";
         }
         else{
             return "forward:/book/add.action";
@@ -58,8 +74,12 @@ public class BookController {
     }
 
     @RequestMapping("/del")
-    public String delBook(String isbn){
-        bookService.deleteBook(isbn);
+    public String delBook(Model model,String isbn){
+        boolean res=bookService.deleteBook(isbn);
+        if(res){
+            model.addAttribute("result",res);
+            return "result";
+        }
         return "forward:/book/listbypager.action";
     }
 

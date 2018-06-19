@@ -17,7 +17,14 @@
 <html>
 <head>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <title>新增书籍</title>
     <base href="<%=request.getContextPath()+"/"%>">
     <style type="text/css">
@@ -56,7 +63,10 @@
             </tr>
             <tr>
                 <td><p>出版时间：</p></td>
-                <td><input name="publishDate" type="text" value="<%=date%>"/></td>
+                <td>
+                    <%--<input name="publishDate" type="text" value="<%=date%>"/>--%>
+                    <input name="publishDate" type="date"/>
+                </td>
             </tr>
             <tr>
                 <td><p>上架类型：</p></td>
@@ -71,7 +81,13 @@
                 <td><input type="submit" class="btn"/></td>
             </tr>
         </table>
+        <c:if test="${errors!=null}">
+            <c:forEach var="error" items="${errors}">
+                <a>${error.defaultMessage}</a>
+            </c:forEach>
+        </c:if>
     </form>
+
 </body>
 
 </html>

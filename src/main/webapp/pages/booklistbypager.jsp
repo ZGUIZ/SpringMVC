@@ -10,7 +10,14 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link href="css/style.css"/>
     <title>书籍列表页面</title>
     <base href="<%=basePath%>">
@@ -36,7 +43,7 @@
                     <td><input type="text" placeholder="查询的书名" name="book.bookName" value="${pager.book.bookName}" class="pagerinput input-medium search-query"/></td>
                     <%--<td><input type="text" placeholder="低于此价格" name="book.price" value="${pager.book.price}" class="pagerinput input-medium search-query"/></td>--%>
                     <td><input type="text" placeholder="出版社" name="book.publisher" value="${pager.book.publisher}" class="pagerinput input-medium search-query"/></td>
-                    <%--<td><input type="text" placeholder="早于此日期发布" name="book.publishDate" value="${pager.book.publishDate}" class="pagerinput"/></td>--%>
+                    <%--<td><input type="date" name="book.publishDate" value="${pager.book.publishDate}" class="pagerinput"/></td>--%>
                     <td>
                         <select name="book.categoryId" style="width: 175px; height: 25px">
                             <option value="0"></option>
@@ -87,9 +94,9 @@
                 </tr>
             </c:forEach>
         </table>
-        <div>
-            <button class="btn btn-link pagebutton" onclick="javascript:setPagerAndSubmit(${pager.prePage})">上一页</button>
-            <button class="btn btn-link pagebutton" onclick="javascript:setPagerAndSubmit(${pager.nextPage})">下一页</button>
+        <div align="right">
+            <button class="btn btn-link" onclick="javascript:setPagerAndSubmit(${pager.prePage})">上一页</button>
+            <button class="btn btn-link" onclick="javascript:setPagerAndSubmit(${pager.nextPage})">下一页</button>
         </div>
     </div>
 </body>
