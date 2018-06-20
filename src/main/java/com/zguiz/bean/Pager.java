@@ -30,6 +30,9 @@ public class Pager {
         if(currentPage>0) {
             this.currentPage = currentPage;
         }
+        if(total>0&&total<currentPage){
+            this.currentPage=total;
+        }
     }
 
     public int getPageSize() {

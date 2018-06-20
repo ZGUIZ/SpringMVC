@@ -6,3 +6,7 @@
 .pagebutton{
     margin-right: 10px;
 }
+
+.errmsg{
+    color: red;
+}

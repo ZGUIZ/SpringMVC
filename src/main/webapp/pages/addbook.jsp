@@ -35,6 +35,9 @@
             font-size: 32px;
             text-align: center;
         }
+        .errmsg{
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -47,7 +50,8 @@
             </th>
             <tr>
                 <td><p>出版号：</p></td>
-                <td><input name="isbn" type="text"/></td>
+                <td><input name="isbn" type="text" id="isbn"/></td>
+                <td><p id="errormessage" class="errmsg"></p></td>
             </tr>
             <tr>
                 <td><p>书籍名称：</p></td>
@@ -89,5 +93,24 @@
     </form>
 
 </body>
-
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script>
+    var isbninput=$("#isbn");
+    isbninput.blur(
+        function () {
+            var ib=isbninput.val();
+            $.post("book/findbyisbn",{
+                "isbn":ib
+            },function (data) {
+                var res=eval(data);
+                if(res){
+                    $("#errormessage").text("");
+                } else{
+                    $("#errormessage").text("该书籍已经存在！");
+                }
+            });
+        }
+    );
+</script>
 </html>

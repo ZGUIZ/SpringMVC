@@ -15,7 +15,7 @@ public class TestBookController {
     @Before
     public void init(){
         String configLocation="applicationContext.xml";
-        String configLocation2="springmvc-servlet.xml";
+        String configLocation2="application-mvc.xml";
         context=new ClassPathXmlApplicationContext(configLocation,configLocation2);
         bookController=context.getBean(BookController.class);
     }
@@ -24,5 +24,10 @@ public class TestBookController {
     public void testBookList(){
         String result=bookController.listBook(null);
         logger.info(result);
+    }
+
+    @Test
+    public void testJson(){
+        logger.info(bookController.lisBookFromAjax(1));
     }
 }

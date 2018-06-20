@@ -1,8 +1,12 @@
 package com.zguiz.bean;
 
+import com.alibaba.fastjson.JSON;
 import org.hibernate.validator.constraints.NotBlank;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.Date;
+import java.util.List;
 
 public class Book {
     @NotBlank(message = "{isbn_blank}")
@@ -98,5 +102,10 @@ public class Book {
 
     public String toString(){
         return isbn+"\t"+bookName+"\t"+price+"\t"+publisher+"\t"+publishDate;
+    }
+
+    public static String toJson(List<Book> books) throws UnsupportedEncodingException {
+        String result=JSON.toJSONString(books);
+        return URLDecoder.decode(result,"UTF-8");
     }
 }

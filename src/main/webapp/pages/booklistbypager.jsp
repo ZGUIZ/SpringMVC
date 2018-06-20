@@ -59,7 +59,7 @@
                 </tr>
             </table>
         </form>
-        <table align="center" class="table table-striped table-hover table-bordered">
+        <table id="datastable" align="center" class="table table-striped table-hover table-bordered">
             <thead>
             <tr>
                 <td colspan="7" style="font-style: 32px;text-align: center;">书籍列表页面</td>
@@ -81,18 +81,20 @@
                     <td>操作</td>
                 </tr>
             </thead>
-            <c:forEach items="${books}" var="book">
-                <tr>
-                    <td>${book.isbn}</td>
-                    <td>${book.bookName}</td>
-                    <td>${book.price}</td>
-                    <td>${book.publisher}</td>
-                    <td>${book.publishDate}</td>
-                    <td>${book.category.name}</td>
-                    <td><a href="book/update.action?isbn=${book.isbn}">修改</a>
-                        <a href="javascript:deleteBook('${book.isbn}','${book.bookName}');" >删除</a></td>
-                </tr>
-            </c:forEach>
+            <div id="datasdiv">
+                <c:forEach items="${books}" var="book">
+                    <tr>
+                        <td>${book.isbn}</td>
+                        <td>${book.bookName}</td>
+                        <td>${book.price}</td>
+                        <td>${book.publisher}</td>
+                        <td>${book.publishDate}</td>
+                        <td>${book.category.name}</td>
+                        <td><a href="book/update.action?isbn=${book.isbn}">修改</a>
+                            <a href="javascript:deleteBook('${book.isbn}','${book.bookName}');" >删除</a></td>
+                    </tr>
+                </c:forEach>
+            </div>
         </table>
         <div align="right">
             <button class="btn btn-link" onclick="javascript:setPagerAndSubmit(${pager.prePage})">上一页</button>
@@ -103,7 +105,8 @@
 <script type="text/javascript">
     function deleteBook(isbn,name){
         if(confirm("确认删除《"+name+"》？")){
-            location.href="book/del.action?isbn="+isbn;
+            //location.href="book/delbyajax.action?isbn="+isbn;
+            getDatas();
         }
     }
     function setPagerAndSubmit(num) {
@@ -111,5 +114,45 @@
         pager.value=num;
         document.getElementById("findbycondition").submit();
     }
+
+    function getDatas() {
+        $.get("/book/ajaxpager?page=${pager.currentPage}",function (data) {
+            var datadiv=$("#datasdiv");
+            var datastable=$("#datastable");
+            datastable.empty();
+            var newdiv=document.createElement("div");
+            newdiv.id="datasdiv";
+            datastable.append(newdiv);
+
+            var res=jQuery.parseJSON(data);
+            alert(res[0].isbn);
+            for(var i=0;i<res.length;i++){
+                var newtr=document.createElement("tr");
+                newdiv.append(newtr);
+                var id=document.createElement("td");
+                id.innerHTML=res[i].isbn;
+                var name=document.createElement("td");
+                name.innerHTML=res[i].bookName;
+                var price=document.createElement("td");
+                price.innerHTML=res[i].price;
+                var publisher=document.createElement("td");
+                publisher.innerHTML=res[i].publisher;
+                var publishDate=document.createElement("td");
+                publishDate.innerHTML=res[i].publishDate;
+                var category=document.createElement("td");
+                category.innerHTML=res[i].category.name;
+                var fun=document.createElement("td");
+                fun.innerHTML='<a href="book/update.action?isbn=${book.isbn}">修改</a>\n' +
+                    '<a href="javascript:deleteBook(${book.isbn},${book.bookName});" >删除</a>';
+                newdiv.append(id);
+                newdiv.append(name);
+                newdiv.append(price);
+                newdiv.append(publisher);
+                newdiv.append(publishDate);
+                newdiv.append(fun);
+            }
+        });
+    }
+
 </script>
 </html>
