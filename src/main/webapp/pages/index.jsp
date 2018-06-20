@@ -9,5 +9,11 @@
 <body>
 <h2>Hello World!</h2>
     <h3>${msg}</h3>
+<c:forEach var="name" items="${names}">
+    ${name}
+</c:forEach>
+<c:forEach var="book" items="${books}">
+    ${book.isbn}
+</c:forEach>
 </body>
 </html>
