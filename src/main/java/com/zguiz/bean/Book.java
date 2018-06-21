@@ -1,6 +1,8 @@
 package com.zguiz.bean;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import org.hibernate.validator.constraints.NotBlank;
 
 import java.io.UnsupportedEncodingException;
@@ -17,6 +19,7 @@ public class Book {
     private Date publishDate;
     private String publisher;
     private int categoryId;
+    private String bookImage;
 
     private Category category;
 
@@ -84,6 +87,14 @@ public class Book {
         }
     }
 
+    public String getBookImage() {
+        return bookImage;
+    }
+
+    public void setBookImage(String bookImage) {
+        this.bookImage = bookImage;
+    }
+
     public int getCategoryId() {
         return categoryId;
     }
@@ -104,9 +115,18 @@ public class Book {
         return isbn+"\t"+bookName+"\t"+price+"\t"+publisher+"\t"+publishDate;
     }
 
-    public static String toJson(List<Book> books) throws UnsupportedEncodingException {
-        String result=JSON.toJSONString(books);
-
-        return result;
+    public static String toJson(List<Book> books) {
+        JSONArray array=new JSONArray();
+        for(Book book:books){
+            JSONObject object=new JSONObject();
+            object.put("isbn",book.getIsbn());
+            object.put("bookName",book.getBookName());
+            object.put("price",book.getPrice());
+            object.put("publisher",book.getPublisher());
+            object.put("publishDate",book.getPublishDate());
+            object.put("categoryName",book.getCategory().getName());
+            array.add(object);
+        }
+        return array.toString();
     }
 }

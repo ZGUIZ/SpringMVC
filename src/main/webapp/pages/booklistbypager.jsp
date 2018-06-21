@@ -106,7 +106,15 @@
     function deleteBook(isbn,name){
         if(confirm("确认删除《"+name+"》？")){
             //location.href="book/delbyajax.action?isbn="+isbn;
-            getDatas();
+            $.get("book/delbyajax.action?isbn="+isbn,function (data) {
+                var res=eval(data);
+                if(res){
+                    alert("删除成功！");
+                } else{
+                    alert("删除失败！");
+                }
+                getDatas();
+            });
         }
     }
     function setPagerAndSubmit(num) {
@@ -133,17 +141,19 @@
                 var publisher=document.createElement("td");
                 publisher.innerHTML=res[i].publisher;
                 var publishDate=document.createElement("td");
-                publishDate.innerHTML=res[i].publishDate;
+                publishDate.innerHTML=new Date(res[i].publishDate);
                 var category=document.createElement("td");
-                category.innerHTML=res[i].category.name;
+                // category.innerHTML=res[i].category.name;
+                category.innerHTML=res[i].categoryName;
                 var fun=document.createElement("td");
                 fun.innerHTML='<a href="book/update.action?isbn=${book.isbn}">修改</a>\n' +
-                    '<a href="javascript:deleteBook(${book.isbn},${book.bookName});" >删除</a>';
+                    '<a href="javascript:deleteBook(\''+res[i].isbn+'\',\''+res[i].bookName+'\');" >删除</a>';
                 newtr.append(id);
                 newtr.append(name);
                 newtr.append(price);
                 newtr.append(publisher);
                 newtr.append(publishDate);
+                newtr.append(category);
                 newtr.append(fun);
             }
         });

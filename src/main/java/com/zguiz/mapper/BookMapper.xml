@@ -12,16 +12,18 @@
         <result property="bookName" column="book_name"/>
         <result property="publishDate" column="publish_date"/>
         <result property="categoryId" column="category_id"/>
+        <result property="bookImage" column="book_image"/>
     </resultMap>
 
     <insert id="addBook" parameterType="Book">
-        INSERT INTO book(isbn,book_name,price,publish_date,publisher,category_id) VALUE (#{isbn},#{bookName},#{price},#{publishDate},#{publisher},#{categoryId})
+        INSERT INTO book(isbn,book_name,price,publish_date,publisher,category_id,book_image) VALUE (#{isbn},#{bookName},#{price},#{publishDate},#{publisher},#{categoryId},#{bookImage})
     </insert>
     <resultMap id="BookResultMap" type="Book">
         <result column="book_name" property="bookName"/>
         <result column="price" property="price"/>
         <result column="publish_date" property="publishDate"/>
         <result column="publisher" property="publisher"/>
+        <result property="bookImage" column="book_image"/>
         <association property="category" column="category_id" select="selectCategoryForBook" />
     </resultMap>
     <select id="findAll" resultMap="BookResultMap" resultType="Book">
@@ -54,6 +56,7 @@
         <result column="publisher" property="publisher"/>
         <result column="id" property="category.id"/>
         <result column="name" property="category.name"/>
+        <result property="bookImage" column="book_image"/>
     </resultMap>
     <select id="findAllBookAndCategory" resultMap="BookResultMap2" resultType="Book">
         select * from book left join category on (book.category_id=category.id);
@@ -169,6 +172,16 @@
                     </if>
                 </foreach>
             </trim>
+            <trim prefix="book_image= case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.bookImage==null">
+                        when isbn=#{item.isbn} then book_image
+                    </if>
+                    <if test="item.bookImage!=null">
+                        when isbn=#{item.isbn} then #{item.bookImage}
+                    </if>
+                </foreach>
+            </trim>
         </trim>
         where isbn in
         <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
@@ -176,9 +189,9 @@
         </foreach>
     </update>
     <insert id="addBooks" parameterType="Book">
-        insert into book(isbn,book_name,price,publish_date,publisher,category_id) values
+        insert into book(isbn,book_name,price,publish_date,publisher,category_id,book_image) values
         <foreach collection="list" item="item" index="index" separator=",">
-            (#{item.isbn},#{item.bookName},#{item.price},#{item.publishDate},#{item.publisher},#{item.categoryId})
+            (#{item.isbn},#{item.bookName},#{item.price},#{item.publishDate},#{item.publisher},#{item.categoryId},#{item.bookImage})
         </foreach>
     </insert>
 

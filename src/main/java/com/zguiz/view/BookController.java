@@ -1,5 +1,6 @@
 package com.zguiz.view;
 
+import com.alibaba.fastjson.JSON;
 import com.zguiz.bean.Book;
 import com.zguiz.bean.Category;
 import com.zguiz.bean.Pager;
@@ -16,10 +17,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/book")
@@ -58,7 +64,7 @@ public class BookController {
 
     //BindingResult必须加载@Validated后面
     @RequestMapping("/doadd")
-    public String doAddBook(Model model,@Validated Book book, BindingResult result){
+    public String doAddBook(HttpServletRequest request,Model model, @Validated Book book, BindingResult result, MultipartFile bookIcon) throws IOException {
         //客户端提交到spring mvc后，会先进行数据封装和转换、校验，完成后再控制器内进行处理
         //可以使用校验框架进行数据的集中校验，并获得校验结果
         if(result.hasErrors()){
@@ -68,6 +74,19 @@ public class BookController {
                 logger.debug(oe.getObjectName()+":"+oe.getDefaultMessage());
             }
             return "forward:/book/add";
+        }
+        if(!bookIcon.isEmpty()){
+            String path=request.getServletContext().getRealPath("/uploads");
+            String filename=bookIcon.getOriginalFilename();
+            String fileExt=filename.substring(filename.lastIndexOf("."));
+            String uuid= UUID.randomUUID().toString();
+            String newFile=uuid+fileExt;
+            File filepath=new File(path,newFile);
+            if((!filepath.getParentFile().exists())){
+                filepath.getParentFile().mkdir();
+            }
+            bookIcon.transferTo(new File(path+File.separator+newFile));
+            book.setBookImage("uploads/"+newFile);
         }
         if(bookService.addBook(book)){
             return "redirect:/book/listbypager.action";
@@ -88,8 +107,10 @@ public class BookController {
     }
 
     @RequestMapping("/delbyajax")
-    public void delByAjax(String isbn){
+    @ResponseBody
+    public String delByAjax(String isbn){
         boolean res=bookService.deleteBook(isbn);
+        return "{result:"+res+"}";
     }
 
     @RequestMapping(value="/ajaxpager",method = RequestMethod.GET,produces = "text/html;charset=UTF-8")
@@ -102,12 +123,7 @@ public class BookController {
         pager.setTotal(bookService.countForPager(pager));
         pager.setCurrentPage(page);
         List<Book> books=bookService.findBookByPager(pager);
-        String res= null;
-        try {
-            res = Book.toJson(books);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        String res = Book.toJson(books);
         return res;
     }
 

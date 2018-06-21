@@ -41,7 +41,7 @@
     </style>
 </head>
 <body>
-    <form action="<%=basePath%>book/doadd.action" method="post">
+    <form action="<%=basePath%>book/doadd.action" enctype="multipart/form-data" method="post">
         <table align="center" width="500">
             <th>
                 <tr>
@@ -71,6 +71,10 @@
                     <%--<input name="publishDate" type="text" value="<%=date%>"/>--%>
                     <input name="publishDate" type="date"/>
                 </td>
+            </tr>
+            <tr>
+                <td><p>封面图片：</p></td>
+                <td><input name="bookIcon" type="file"/></td>
             </tr>
             <tr>
                 <td><p>上架类型：</p></td>
