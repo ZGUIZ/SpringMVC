@@ -49,7 +49,7 @@
     </filter>
     <filter-mapping>
         <filter-name>loginFilter</filter-name>
-        <url-pattern>/pages/*.jsp</url-pattern>
+        <url-pattern>/pages/*</url-pattern>
     </filter-mapping>
 
     <!-- 配置spring中央控制器或前端控制器 -->

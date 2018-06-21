@@ -69,7 +69,6 @@ http://www.springframework.org/schema/mvc/spring-mvc.xsd">
         <mvc:interceptor>
             <!--拦截所有的mvc控制器-->
             <mvc:mapping path="/**"/>
-
             <!--对于不需要拦截的地址，可以使用exclude排除-->
             <mvc:exclude-mapping path="/system/login"/>
             <bean class="com.zguiz.interceptor.LoginInterceptor"></bean>
