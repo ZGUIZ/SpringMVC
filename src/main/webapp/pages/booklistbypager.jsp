@@ -81,7 +81,7 @@
                     <td>操作</td>
                 </tr>
             </thead>
-            <div id="datasdiv">
+            <tbody id="datasbody">
                 <c:forEach items="${books}" var="book">
                     <tr>
                         <td>${book.isbn}</td>
@@ -94,7 +94,7 @@
                             <a href="javascript:deleteBook('${book.isbn}','${book.bookName}');" >删除</a></td>
                     </tr>
                 </c:forEach>
-            </div>
+            </tbody>
         </table>
         <div align="right">
             <button class="btn btn-link" onclick="javascript:setPagerAndSubmit(${pager.prePage})">上一页</button>
@@ -117,18 +117,13 @@
 
     function getDatas() {
         $.get("/book/ajaxpager?page=${pager.currentPage}",function (data) {
-            var datadiv=$("#datasdiv");
-            var datastable=$("#datastable");
-            datastable.empty();
-            var newdiv=document.createElement("div");
-            newdiv.id="datasdiv";
-            datastable.append(newdiv);
+            var datasbody=$("#datasbody");
+            datasbody.empty();
 
             var res=jQuery.parseJSON(data);
-            alert(res[0].isbn);
             for(var i=0;i<res.length;i++){
                 var newtr=document.createElement("tr");
-                newdiv.append(newtr);
+                datasbody.append(newtr);
                 var id=document.createElement("td");
                 id.innerHTML=res[i].isbn;
                 var name=document.createElement("td");
@@ -144,12 +139,12 @@
                 var fun=document.createElement("td");
                 fun.innerHTML='<a href="book/update.action?isbn=${book.isbn}">修改</a>\n' +
                     '<a href="javascript:deleteBook(${book.isbn},${book.bookName});" >删除</a>';
-                newdiv.append(id);
-                newdiv.append(name);
-                newdiv.append(price);
-                newdiv.append(publisher);
-                newdiv.append(publishDate);
-                newdiv.append(fun);
+                newtr.append(id);
+                newtr.append(name);
+                newtr.append(price);
+                newtr.append(publisher);
+                newtr.append(publishDate);
+                newtr.append(fun);
             }
         });
     }

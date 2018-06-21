@@ -106,6 +106,7 @@ public class Book {
 
     public static String toJson(List<Book> books) throws UnsupportedEncodingException {
         String result=JSON.toJSONString(books);
-        return URLDecoder.decode(result,"UTF-8");
+
+        return result;
     }
 }

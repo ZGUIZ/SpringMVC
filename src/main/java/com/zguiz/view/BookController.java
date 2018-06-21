@@ -14,6 +14,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -91,6 +92,25 @@ public class BookController {
         boolean res=bookService.deleteBook(isbn);
     }
 
+    @RequestMapping(value="/ajaxpager",method = RequestMethod.GET,produces = "text/html;charset=UTF-8")
+    @ResponseBody
+    public String lisBookFromAjax(Integer page){
+        if(page==null){
+            page=1;
+        }
+        Pager pager=new Pager();
+        pager.setTotal(bookService.countForPager(pager));
+        pager.setCurrentPage(page);
+        List<Book> books=bookService.findBookByPager(pager);
+        String res= null;
+        try {
+            res = Book.toJson(books);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
+
     @RequestMapping("/update")
     public ModelAndView toUpdateBook(String isbn){
         Book book=new Book();
@@ -124,25 +144,6 @@ public class BookController {
         view.getModel().put("categories",categories);
         view.getModel().put("pager",pager);
         return view;
-    }
-
-    @RequestMapping("/ajaxpager")
-    @ResponseBody
-    public String lisBookFromAjax(Integer page){
-        if(page==null){
-            page=1;
-        }
-        Pager pager=new Pager();
-        pager.setTotal(bookService.countForPager(pager));
-        pager.setCurrentPage(page);
-        List<Book> books=bookService.findBookByPager(pager);
-        String res= null;
-        try {
-            res = Book.toJson(books);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return res;
     }
 
     @RequestMapping("findbyisbn")
