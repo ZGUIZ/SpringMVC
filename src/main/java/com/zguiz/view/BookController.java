@@ -76,7 +76,7 @@ public class BookController {
             return "forward:/book/add";
         }
         if(!bookIcon.isEmpty()){
-            String path=request.getServletContext().getRealPath("/uploads");
+            String path=request.getServletContext().getRealPath("/uploads/");
             String filename=bookIcon.getOriginalFilename();
             String fileExt=filename.substring(filename.lastIndexOf("."));
             String uuid= UUID.randomUUID().toString();

@@ -77,6 +77,7 @@
                     <td>价格</td>
                     <td>出版社</td>
                     <td>出版日期</td>
+                    <td>封面</td>
                     <td>分类</td>
                     <td>操作</td>
                 </tr>
@@ -89,6 +90,7 @@
                         <td>${book.price}</td>
                         <td>${book.publisher}</td>
                         <td>${book.publishDate}</td>
+                        <td><img src="${book.bookImage}" height="60px"/></td>
                         <td>${book.category.name}</td>
                         <td><a href="book/update.action?isbn=${book.isbn}">修改</a>
                             <a href="javascript:deleteBook('${book.isbn}','${book.bookName}');" >删除</a></td>
@@ -142,6 +144,8 @@
                 publisher.innerHTML=res[i].publisher;
                 var publishDate=document.createElement("td");
                 publishDate.innerHTML=new Date(res[i].publishDate);
+                var image=document.createElement("td");
+                image.innerHTML='<td><img src="'+res[i].bookImage+'" height="60px"/></td>';
                 var category=document.createElement("td");
                 // category.innerHTML=res[i].category.name;
                 category.innerHTML=res[i].categoryName;
