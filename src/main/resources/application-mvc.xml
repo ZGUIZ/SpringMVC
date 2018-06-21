@@ -60,4 +60,21 @@ http://www.springframework.org/schema/mvc/spring-mvc.xsd">
             <value>UTF-8</value>
         </property>
     </bean>
+
+    <!--mapping对应url网址，location对应服务器文件-->
+    <mvc:resources location="/uploads/" mapping="/uploads/**"/>
+    <mvc:resources location="/pages/css/" mapping="/pages/css/**"/>
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <!--拦截所有的mvc控制器-->
+            <mvc:mapping path="/**"/>
+
+            <!--对于不需要拦截的地址，可以使用exclude排除-->
+            <mvc:exclude-mapping path="/system/login"/>
+            <bean class="com.zguiz.interceptor.LoginInterceptor"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+    <!--<mvc:default-servlet-handler />-->
 </beans>

@@ -17,6 +17,7 @@
 <html>
 <head>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <link href="css/style.css" rel="stylesheet">
     <!-- 新 Bootstrap 核心 CSS 文件 -->
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 
@@ -34,9 +35,6 @@
         .title{
             font-size: 32px;
             text-align: center;
-        }
-        .errmsg{
-            color: red;
         }
     </style>
 </head>

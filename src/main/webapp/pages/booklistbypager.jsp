@@ -62,11 +62,11 @@
         <table id="datastable" align="center" class="table table-striped table-hover table-bordered">
             <thead>
             <tr>
-                <td colspan="7" style="font-style: 32px;text-align: center;">书籍列表页面</td>
+                <td colspan="8" style="font-style: 32px;text-align: center;">书籍列表页面</td>
             </tr>
             </thead>
             <tr>
-                <td colspan="7" style="font-style: 20px;text-align: center;">
+                <td colspan="8" style="font-style: 20px;text-align: center;">
                     <a href="book/add.action">新增书籍</a>
                 </td>
             </tr>
@@ -157,6 +157,7 @@
                 newtr.append(price);
                 newtr.append(publisher);
                 newtr.append(publishDate);
+                newtr.append(image);
                 newtr.append(category);
                 newtr.append(fun);
             }

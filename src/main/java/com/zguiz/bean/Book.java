@@ -124,6 +124,7 @@ public class Book {
             object.put("price",book.getPrice());
             object.put("publisher",book.getPublisher());
             object.put("publishDate",book.getPublishDate());
+            object.put("bookImage",book.getBookImage());
             object.put("categoryName",book.getCategory().getName());
             array.add(object);
         }
