@@ -19,9 +19,9 @@ public class LoginFilter implements Filter{
         HttpServletRequest request=(HttpServletRequest)servletRequest;
         HttpSession session=request.getSession();
         Object object=session.getAttribute("LOGIN_USER");
-        if(object==null&&request.getRequestURI().indexOf("pages/login.jsp")!=-1){
+        if(object==null&&request.getRequestURI().indexOf("pages/login.jsp")==-1){
             HttpServletResponse response=(HttpServletResponse) servletResponse;
-            response.sendRedirect("pages/login.jsp");
+            response.sendRedirect("/pages/login.jsp");
         } else {
             //已经登录，继续请求下一级资源
             filterChain.doFilter(servletRequest,servletResponse);

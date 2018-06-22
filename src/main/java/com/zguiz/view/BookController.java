@@ -1,6 +1,5 @@
 package com.zguiz.view;
 
-import com.alibaba.fastjson.JSON;
 import com.zguiz.bean.Book;
 import com.zguiz.bean.Category;
 import com.zguiz.bean.Pager;
@@ -13,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,7 +21,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.UUID;
 
@@ -82,7 +79,7 @@ public class BookController {
             String uuid= UUID.randomUUID().toString();
             String newFile=uuid+fileExt;
             File filepath=new File(path,newFile);
-            if((!filepath.getParentFile().exists())){
+            if(!filepath.getParentFile().exists()){
                 filepath.getParentFile().mkdir();
             }
             bookIcon.transferTo(new File(path+File.separator+newFile));
