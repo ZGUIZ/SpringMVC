@@ -41,6 +41,7 @@ public class SMSUtil {
         return String.valueOf(code);
     }
 
+    //生成随机验证码
     private static int getRandomValue(){
         int min=1000;
         int max=9999;
@@ -48,6 +49,7 @@ public class SMSUtil {
         return random.nextInt(max)%(max-min+1)+min;
     }
 
+    //发送请求
     private static String net(String strUrl,Map params,String method) throws Exception{
         HttpURLConnection conn=null;
         BufferedReader reader=null;
