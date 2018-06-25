@@ -59,7 +59,6 @@ public class SMSUtil {
             if(method==null||method.equals("GET")){
                 strUrl=strUrl+"?"+urlencode(params);
             }
-            System.out.println(strUrl);
             URL url=new URL(strUrl);
             conn=(HttpURLConnection) url.openConnection();
             conn.setUseCaches(false);
