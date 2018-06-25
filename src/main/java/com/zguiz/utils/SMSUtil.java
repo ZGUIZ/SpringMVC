@@ -14,6 +14,7 @@ public class SMSUtil {
     private static final String url="http://v.juhe.cn/sms/send";
     private static final String tplId="84291";
     private static final String key="**********";
+
     public static String sendSMS(String mobile){
         String result=null;
         int code=getRandomValue();
