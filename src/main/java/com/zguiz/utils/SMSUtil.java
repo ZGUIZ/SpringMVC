@@ -13,7 +13,7 @@ import java.util.Random;
 public class SMSUtil {
     private static final String url="http://v.juhe.cn/sms/send";
     private static final String tplId="84291";
-    private static final String key="7e2093da26183f68d4c6b44cc142b593";
+    private static final String key="**********";
     public static String sendSMS(String mobile){
         String result=null;
         int code=getRandomValue();
